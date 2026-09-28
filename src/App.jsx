@@ -1,6 +1,9 @@
+import { useState } from "react"
+import {Input} from './components/Input'
+import {Result} from './components/Result'
 function App() {
   return (
-    <h1>React Investment Calculator</h1>
+    <></>
   )
 }
 
