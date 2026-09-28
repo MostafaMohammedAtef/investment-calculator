@@ -15,14 +15,14 @@ function App() {
   const [userInput, setUserInput] = useState(INITIAL_VALUE);
 
   function handleChange(inputIdentifier, newValue) {
-    if (+newValue < 0) {
-      alert("Value cannot be negative!");
-      return;
-    }
     setUserInput((prevUserInput) => ({
       ...prevUserInput,
       [inputIdentifier]: +newValue,
     }));
+  }
+
+  function handleReset() {
+    setUserInput(INITIAL_VALUE);
   }
 
   const resultData = calculateInvestmentResults(userInput);
@@ -38,7 +38,9 @@ function App() {
             id="initial-investment"
             type="number"
             step="1000"
+            min="0"
             value={userInput.initialInvestment}
+            invalid={userInput.initialInvestment < 0}
             onChange={(event) => handleChange('initialInvestment', event.target.value)}
           />
           <Input
@@ -46,7 +48,9 @@ function App() {
             id="annual-investment"
             type="number"
             step="100"
+            min="0"
             value={userInput.annualInvestment}
+            invalid={userInput.annualInvestment < 0}
             onChange={(event) => handleChange('annualInvestment', event.target.value)}
           />
         </div>
@@ -55,8 +59,10 @@ function App() {
             label="Expected Return"
             id="expected-return"
             type="number"
-            step="1"
+            step="0.1"
+            min="0"
             value={userInput.expectedReturn}
+            invalid={userInput.expectedReturn < 0}
             onChange={(event) => handleChange('expectedReturn', event.target.value)}
           />
           <Input
@@ -64,11 +70,19 @@ function App() {
             id="duration"
             type="number"
             step="1"
+            min="0"
             value={userInput.duration}
+            invalid={userInput.duration < 0}
             onChange={(event) => handleChange('duration', event.target.value)}
           />
         </div>
+        <p className="actions">
+          <button type="button" onClick={handleReset}>
+            Reset to Defaults
+          </button>
+        </p>
       </div>
+
       {inputIsInvalid ? (
         <p className="center">Invalid input data provided (must be greater than zero)</p>
       ) : (
