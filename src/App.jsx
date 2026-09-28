@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from './components/Input';
+import Select from './components/Select';
 import Result from './components/Result';
 import Header from './components/Header/Header';
 import { calculateInvestmentResults } from './util/investment.js';
@@ -9,10 +10,20 @@ const INITIAL_VALUE = {
   annualInvestment: 1200,
   expectedReturn: 6,
   duration: 10,
+  compoundingFrequency: 1,
 };
 
+const STORAGE_KEY = 'investment-calculator-input';
+
 function App() {
-  const [userInput, setUserInput] = useState(INITIAL_VALUE);
+  const [userInput, setUserInput] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : INITIAL_VALUE;
+  });
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userInput));
+  }, [userInput]);
 
   function handleChange(inputIdentifier, newValue) {
     setUserInput((prevUserInput) => ({
@@ -74,6 +85,19 @@ function App() {
             value={userInput.duration}
             invalid={userInput.duration < 0}
             onChange={(event) => handleChange('duration', event.target.value)}
+          />
+        </div>
+        <div className="input-group">
+          <Select
+            label="Compounding"
+            id="compounding-frequency"
+            value={userInput.compoundingFrequency}
+            onChange={(event) => handleChange('compoundingFrequency', event.target.value)}
+            options={[
+              { value: 1, label: 'Annually' },
+              { value: 4, label: 'Quarterly' },
+              { value: 12, label: 'Monthly' },
+            ]}
           />
         </div>
         <p className="actions">

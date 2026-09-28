@@ -198,3 +198,42 @@ body {
   font-weight: bold;
   color: #e1eeeb;
 }
+
+.chart-container {
+  max-width: 40rem;
+  margin: 2rem auto 0;
+}
+
+.growth-chart {
+  width: 100%;
+  height: auto;
+}
+
+.chart-area {
+  fill: rgba(131, 230, 192, 0.15);
+  stroke: none;
+}
+
+.chart-line {
+  fill: none;
+  stroke: #83e6c0;
+  stroke-width: 2;
+}
+
+.chart-dot {
+  fill: #2b996d;
+  stroke: #e1eeeb;
+  stroke-width: 1;
+  cursor: pointer;
+}
+
+#user-input select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #76c0ae;
+  border-radius: 0.25rem;
+  background-color: #1a4d3e;
+  color: #c2e9e0;
+  font-size: 1rem;
+  font-family: 'Quicksand', sans-serif;
+}

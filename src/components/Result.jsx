@@ -1,4 +1,5 @@
 import { calculateInvestmentResults, formatter } from '../util/investment.js';
+import Chart from './Chart.jsx';
 
 export default function Result({ input }) {
   const resultData = calculateInvestmentResults(input);
@@ -19,6 +20,25 @@ export default function Result({ input }) {
 
   const finalYear = rows[rows.length - 1];
 
+  function handleExportCSV() {
+    const headers = ['Year', 'Investment Value', 'Interest (Year)', 'Total Interest', 'Invested Capital'];
+    const csvRows = rows.map((r) => [
+      r.year,
+      r.valueEndOfYear.toFixed(2),
+      r.interest.toFixed(2),
+      r.totalInterest.toFixed(2),
+      r.totalAmountInvested.toFixed(2),
+    ]);
+    const csvContent = [headers, ...csvRows].map((row) => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'investment-results.csv';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <>
       <div className="summary">
@@ -35,6 +55,8 @@ export default function Result({ input }) {
           <p className="summary-value">{formatter.format(finalYear.totalAmountInvested)}</p>
         </div>
       </div>
+
+      <Chart data={rows} />
 
       <table id="result" key={JSON.stringify(input)}>
         <thead>
@@ -58,6 +80,12 @@ export default function Result({ input }) {
           ))}
         </tbody>
       </table>
+
+      <p className="actions">
+        <button type="button" onClick={handleExportCSV}>
+          Export as CSV
+        </button>
+      </p>
     </>
   );
 }
