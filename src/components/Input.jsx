@@ -1,5 +1,8 @@
-export default function Input(){
-  return(
-    <input type="text" />
+export default function Input({ label, id, ...props }) {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input id={id} {...props} />
+    </div>
   );
 }
